@@ -19,6 +19,14 @@ void main() {
     expect(findMenuItem('Strawberry Passion Fruit Smoothie')?.price, 60);
   });
 
+  test('every menu item has an Arabic name', () {
+    for (final item in cafeMenuItems) {
+      expect(item.arabicName, isNotEmpty, reason: item.name);
+    }
+    expect(findMenuItem('Fries')?.arabicName, 'بطاطس');
+    expect(findMenuItem('Nutella Waffle')?.arabicName, 'وافل نوتيلا');
+  });
+
   testWidgets('customers can add a menu item and review checkout', (
     tester,
   ) async {
@@ -35,13 +43,14 @@ void main() {
 
     await tester.tap(find.byTooltip('Add Fries'));
     await tester.pumpAndSettle();
+    expect(find.text('بطاطس'), findsOneWidget);
     expect(find.text('1 item'), findsOneWidget);
     expect(find.text('EGP 50  ·  Checkout'), findsOneWidget);
 
     await tester.tap(find.text('EGP 50  ·  Checkout'));
     await tester.pumpAndSettle();
     expect(find.text('Review your order'), findsOneWidget);
-    expect(find.text('1 × Fries'), findsOneWidget);
+    expect(find.text('1 × Fries (بطاطس)'), findsOneWidget);
     expect(find.text('Send order on WhatsApp'), findsOneWidget);
   });
 }

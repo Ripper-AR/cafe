@@ -67,7 +67,76 @@ class MenuItem {
   final String category;
   final int price;
   final IconData icon;
+
+  String get arabicName {
+    final translatedName = _arabicMenuNames[name];
+    if (translatedName == null) {
+      throw StateError('Missing Arabic menu name for "$name".');
+    }
+    return translatedName;
+  }
 }
+
+const _arabicMenuNames = <String, String>{
+  'Fries': 'بطاطس',
+  'Burger': 'برجر',
+  'Strips': 'ستربس',
+  'Double Burger': 'برجر دبل',
+  'Burger + Fries + Soft Drink': 'برجر + بطاطس + مشروب غازي',
+  'Strips + Fries + Soft Drink': 'ستربس + بطاطس + مشروب غازي',
+  '2 Burgers + 2 Strips + 2 Fries + Soft Drinks':
+      '٢ برجر + ٢ ستربس + ٢ بطاطس + مشروبات غازية',
+  'Orange Juice': 'عصير برتقال',
+  'Banana with Milk': 'موز باللبن',
+  'Lemon': 'ليمون',
+  'Lemon Mint': 'ليمون بالنعناع',
+  'Watermelon': 'بطيخ',
+  'Mango': 'مانجو',
+  'Strawberry': 'فراولة',
+  'Karkadeh': 'كركديه',
+  'Sunshine': 'صن شاين',
+  'Mojito': 'موهيتو',
+  'Passion Fruit': 'باشون فروت',
+  'Mixed Soda': 'ميكس صودا',
+  'Sun Rina': 'صن رينا',
+  'Iced Latte': 'آيس لاتيه',
+  'Latte': 'لاتيه',
+  'Iced Chocolate': 'آيس شوكولاتة',
+  'Iced Caramel Latte': 'آيس كراميل لاتيه',
+  'Red Tea': 'شاي أحمر',
+  'Green Tea': 'شاي أخضر',
+  'Nescafe Black': 'نسكافيه بلاك',
+  'Mint': 'نعناع',
+  'Anise': 'ينسون',
+  'Coffee Mix': 'كوفي ميكس',
+  'Cappuccino': 'كابتشينو',
+  'Cappuccino (Double)': 'كابتشينو دبل',
+  'Latte (Double)': 'لاتيه دبل',
+  'Turkish Coffee': 'قهوة تركي',
+  'Turkish Coffee (Double)': 'قهوة تركي دبل',
+  'French Coffee': 'قهوة فرنساوي',
+  'French Coffee (Double)': 'قهوة فرنساوي دبل',
+  'Espresso': 'إسبريسو',
+  'Espresso (Double)': 'إسبريسو دبل',
+  'Hot Chocolate': 'هوت شوكولاتة',
+  'Nescafe 3in1': 'نسكافيه ٣ في ١',
+  'Nutella Waffle': 'وافل نوتيلا',
+  'White Waffle': 'وافل وايت',
+  'Oreo Waffle': 'وافل أوريو',
+  'Hohos Waffle': 'وافل هوهوز',
+  'Mix Waffle': 'وافل ميكس',
+  'Watermelon Smoothie': 'سموذي بطيخ',
+  'Strawberry Smoothie': 'سموذي فراولة',
+  'Banana Smoothie': 'سموذي موز',
+  'Lemon Smoothie': 'سموذي ليمون',
+  'Blueberry Smoothie': 'سموذي بلوبيري',
+  'Mango Smoothie': 'سموذي مانجو',
+  'Strawberry Passion Fruit Smoothie': 'سموذي باشون فراولة',
+  '7UP': 'سفن أب',
+  'Pepsi': 'بيبسي',
+  'Pepsi Diet': 'بيبسي دايت',
+  'Mirinda': 'ميرندا',
+};
 
 const _menuItems = <MenuItem>[
   MenuItem(name: 'Fries', category: 'Sandwiches', price: 50, icon: Icons.tapas),
@@ -422,6 +491,8 @@ MenuItem? findMenuItem(String name) {
   }
   return null;
 }
+
+List<MenuItem> get cafeMenuItems => _menuItems;
 
 class CafeHomePage extends StatefulWidget {
   const CafeHomePage({super.key});
@@ -806,14 +877,29 @@ class _MenuItemCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  item.name,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                  ),
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 7,
+                  runSpacing: 2,
+                  children: [
+                    Text(
+                      item.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
+                    ),
+                    Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: Text(
+                        item.arabicName,
+                        style: TextStyle(
+                          color: Colors.white.withValues(alpha: 0.65),
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -923,7 +1009,7 @@ class _CheckoutSheetState extends State<CheckoutSheet> {
       ..writeln('*Items*');
     for (final line in widget.lines) {
       buffer.writeln(
-        '• ${line.quantity} × ${line.item.name} — EGP ${line.quantity * line.item.price}',
+        '• ${line.quantity} × ${line.item.name} (${line.item.arabicName}) — EGP ${line.quantity * line.item.price}',
       );
     }
     buffer
@@ -993,7 +1079,7 @@ class _CheckoutSheetState extends State<CheckoutSheet> {
                   children: [
                     Expanded(
                       child: Text(
-                        '${line.quantity} × ${line.item.name}',
+                        '${line.quantity} × ${line.item.name} (${line.item.arabicName})',
                         style: const TextStyle(color: Colors.white70),
                       ),
                     ),
