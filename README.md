@@ -7,6 +7,10 @@ totals, and prepare an order message for WhatsApp.
 The menu includes sandwiches, meals, fresh juices, soda, soft drinks, coffee,
 hot drinks, waffles, and smoothies. Prices are in EGP.
 
+The Android launcher and web app icons use the cafe seal artwork in
+`assets/app_icon.png`; Android adaptive icons use `assets/app_icon_foreground.png`.
+Regenerate the configured icons with `dart run flutter_launcher_icons`.
+
 ## Run
 
 Open the project in Android Studio or run it with Flutter:
