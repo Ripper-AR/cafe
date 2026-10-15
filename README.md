@@ -10,7 +10,8 @@ Arabic; prices are in EGP.
 
 The Android launcher and web app icons use the cafe seal artwork in
 `assets/app_icon.png`; Android adaptive icons use
-`assets/app_icon_foreground.png`. Regenerate icons with
+`assets/app_icon_foreground.png`. iOS uses the same cafe seal as its app icon.
+Regenerate icons with
 `dart run flutter_launcher_icons`.
 
 ## Run
@@ -26,6 +27,13 @@ To build an Android APK:
 
 ```sh
 flutter build apk
+```
+
+To run or build for iOS, use macOS with Xcode installed:
+
+```sh
+flutter run -d ios
+flutter build ios
 ```
 
 Browsing and preparing an order work offline. Sending requires WhatsApp and a
